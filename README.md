@@ -68,6 +68,16 @@ Answer + Sources
 
 ---
 
+## 工夫したポイント
+
+- PDFアップロード時にローディング画面を表示
+- 回答時に参照元（PDF名・ページ番号）を表示
+- 会話履歴をlocalStorageに保存
+- PDF削除時にChromaDBのベクトルも同時削除
+- Chunk単位でDocumentを管理
+
+---
+
 ## 画面イメージ
 
 ### Chat画面
