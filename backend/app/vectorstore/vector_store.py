@@ -44,10 +44,17 @@ def create_vectorstore(split_docs):
         
     # 新規だけ追加
     if new_docs:
-        vectorstore.add_documents(
-            documents=new_docs,
-            ids= new_ids
-        )
+        
+        BATCH_SIZE = 5000
+        
+        for i in range(0, len(new_docs), BATCH_SIZE):
+            batch_docs = new_docs[i:i + BATCH_SIZE]
+            batch_ids = new_ids[i:i + BATCH_SIZE]
+        
+            vectorstore.add_documents(
+                documents=batch_docs,
+                ids= batch_ids
+            )
         
         print(f"{len(new_docs)}件を登録しました。")
     

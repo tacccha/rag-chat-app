@@ -104,7 +104,7 @@ export default function ChatMessage({ history }) {
                                             Page: {source.page}
                                         </div>
 
-                                        <div
+                                        {/* <div
                                             className="
                                                             text-gray-400
                                                             text-xs
@@ -112,7 +112,7 @@ export default function ChatMessage({ history }) {
                                                         "
                                         >
                                             Score: {source.score?.toFixed(3)}
-                                        </div>
+                                        </div> */}
                                     </div>
                                 ))}
                             </div>

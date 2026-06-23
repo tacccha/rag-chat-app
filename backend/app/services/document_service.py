@@ -83,28 +83,39 @@ def upload_document(file: UploadFile):
             "filename": file.filename,
             "message": "同名ファイルが既に存在します"
         }
+        
+    try:
+        # ファイル保存
+        with open(save_path, "wb") as buffer:
+            shutil.copyfileobj(
+                file.file,
+                buffer
+            )
+        
+        # ファイル読み込み
+        documents = load_pdf(save_path)
+        
+        # Chunk分割
+        split_docs = create_chunks(documents)
+        
+        # VectorDB登録
+        create_vectorstore(split_docs)
+        
+        return {
+            "filename": file.filename,
+            "message": "アップロードとChromaDB登録が完了しました"
+        }
     
-    # ファイル保存
-    with open(save_path, "wd") as buffer:
-        shutil.copyfileobj(
-            file.file,
-            buffer
-        )
-    
-    # ファイル読み込み
-    documents = load_pdf(save_path)
-    
-    # Chunk分割
-    split_docs = create_chunks(documents)
-    
-    # VectorDB登録
-    create_vectorstore(split_docs)
-    
-    return {
-        "filename": file.filename,
-        "message": "アップロードとChromaDB登録が完了しました"
-    }
-
+    except Exception as e:
+        # Chroma登録失敗時はPDF削除
+        if os.path.exists(save_path):
+            os.remove(save_path)
+        
+        return {
+            "filename": file.filename,
+            "message": f"アップロード失敗: {str(e)}"
+        }
+  
 
 def delete_raw_document(filename: str):
     """

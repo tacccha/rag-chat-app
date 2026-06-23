@@ -53,6 +53,7 @@ export default function QuestionInput({
                     rounded-2xl
                     hover:bg-blue-600
                     disabled:bg-gray-400
+                    cursor-pointer
                 "
                 onClick={handleAsk}
                 disabled={loading || !question.trim()}

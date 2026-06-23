@@ -1,3 +1,4 @@
+import os
 from app.rag.similarity_search import similarity_search
 from app.rag.generator import get_llm
 from app.rag.prompt import get_prompt
@@ -61,9 +62,9 @@ def run_rag(question: str):
     
     for doc, score in results:
         sources.append({
-            "title": doc.metadata.get("title"),
+            "title": os.path.basename(doc.metadata.get("source", "")),
             "page": doc.metadata.get("page_number"),
-            "score": score
+            # "score": score
         })
             
     

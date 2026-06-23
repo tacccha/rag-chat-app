@@ -37,8 +37,14 @@ export default function Home() {
     // Sidebar開閉
     const [sidebarOpen, setSidebarOpen] = useState(true);
 
+    // アップロード中
+    const [uploading, setUploading] = useState(false);
+
     // chat最下部ref
     const bottomRef = useRef(null);
+
+    // file input制御用
+    const fileInputRef = useRef(null);
 
     // =========================
     // 質問送信
@@ -118,6 +124,9 @@ export default function Home() {
         formData.append("file", file);
 
         try {
+            // アップロード開始
+            setUploading(true);
+
             const response = await fetch(
                 `${API_URL}/upload`,
 
@@ -132,14 +141,21 @@ export default function Home() {
             alert(data.message);
 
             // 一覧再取得
-            loadDocuments();
+            await loadDocuments();
 
             // file初期化
             setFile(null);
+
+            if (fileInputRef.current) {
+                fileInputRef.current.value = "";
+            }
         } catch (err) {
             console.error(err);
 
             alert("アップロードに失敗しました");
+        } finally {
+            // アップロード終了
+            setUploading(false);
         }
     }
 
@@ -284,6 +300,7 @@ export default function Home() {
                             px-3
                             py-2
                             hover:bg-gray-100
+                            cursor-pointer
                         "
                         onClick={() => setSidebarOpen(!sidebarOpen)}
                     >
@@ -297,7 +314,8 @@ export default function Home() {
                             file={file}
                             setFile={setFile}
                             handleUpload={handleUpload}
-                            loading={loading}
+                            uploading={uploading}
+                            fileInputRef={fileInputRef}
                         />
 
                         <DocumentsList
@@ -407,6 +425,50 @@ export default function Home() {
                     />
                 </div>
             </div>
+            {uploading && (
+                <div
+                    className="
+                        fixed
+                        inset-0
+                        bg-black/40
+                        flex
+                        items-center
+                        justify-center
+                        z-50
+                    "
+                >
+                    <div
+                        className="
+                            bg-white
+                            px-10
+                            py-8
+                            rounded-2xl
+                            shadow-xl
+                            text-center
+                        "
+                    >
+                        <div
+                            className="
+                                animate-spin
+                                rounded-full
+                                h-16
+                                w-16
+                                border-[6px]
+                                border-gray-200
+                                border-t-blue-500
+                                mx-auto
+                            "
+                        />
+                        <p className="mt-6 font-semibold">
+                            PDFを解析しています...
+                        </p>
+                        <p className="text-sm text-gray-500 mt-2">
+                            ファイル保存 → Chunk作成 → Embedding生成 →
+                            ChromaDB登録
+                        </p>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

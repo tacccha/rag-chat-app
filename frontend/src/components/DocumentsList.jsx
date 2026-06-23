@@ -1,19 +1,14 @@
 export default function DocumentsList({
-
     documents,
 
-    handleDelete
-
+    handleDelete,
 }) {
-
     return (
-
         <div
             className="
                 mt-4
             "
         >
-
             <h3
                 className="
                     text-lg
@@ -24,7 +19,6 @@ export default function DocumentsList({
                 Documents
             </h3>
 
-
             <div
                 className="
                     border
@@ -33,34 +27,21 @@ export default function DocumentsList({
                     bg-gray-50
                 "
             >
-
-                {
-                    documents.length === 0 && (
-
-                        <div
-                            className="
+                {documents.length === 0 && (
+                    <div
+                        className="
                                 text-gray-500
                                 text-sm
                             "
-                        >
-                            No Documents
-                        </div>
-                    )
-                }
+                    >
+                        No Documents
+                    </div>
+                )}
 
-
-                {
-                    documents.map(
-                        (
-                            document,
-                            index
-                        ) => (
-
-                            <div
-
-                                key={index}
-
-                                className="
+                {documents.map((document, index) => (
+                    <div
+                        key={index}
+                        className="
                                     flex
                                     justify-between
                                     items-center
@@ -68,22 +49,19 @@ export default function DocumentsList({
                                     border-b
                                     last:border-b-0
                                 "
-                            >
-
-                                <div
-                                    className="
+                    >
+                        <div
+                            className="
                                         text-sm
                                         break-all
                                     "
-                                >
-                                    {document}
-                                </div>
+                        >
+                            {document}
+                        </div>
 
-
-                                <button
-
-                                    className="
-                                        bg-red-500
+                        <button
+                            className="
+                                        bg-red-300
                                         text-white
                                         px-3
                                         py-1
@@ -91,24 +69,15 @@ export default function DocumentsList({
                                         text-sm
                                         hover:bg-red-600
                                         transition
+                                        cursor-pointer
                                     "
-
-                                    onClick={() =>
-                                        handleDelete(
-                                            document
-                                        )
-                                    }
-                                >
-                                    Delete
-                                </button>
-
-                            </div>
-                        )
-                    )
-                }
-
+                            onClick={() => handleDelete(document)}
+                        >
+                            Delete
+                        </button>
+                    </div>
+                ))}
             </div>
-
         </div>
-    )
+    );
 }
